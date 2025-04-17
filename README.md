@@ -59,3 +59,110 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+# Installation and Setup
+
+Follow these steps to install and set up the Laravel application:
+
+---
+
+## Prerequisites
+
+Ensure the following are installed on your system:
+
+- [PHP](https://www.php.net/) (version 8.0 or higher)
+- [Composer](https://getcomposer.org/)
+- [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) or [Yarn](https://yarnpkg.com/)
+- A database (e.g., MySQL, PostgreSQL, SQLite)
+
+---
+
+## Steps
+
+### 1. Clone the Repository
+
+Clone this repository to your local machine:
+
+```bash
+git clone https://github.com/your-repo-name.git
+cd backoffice
+```
+
+---
+
+### 2. Install Dependencies
+
+Install PHP dependencies using Composer:
+
+```bash
+composer install
+```
+
+Install JavaScript dependencies using npm or Yarn:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+---
+
+### 3. Environment Configuration
+
+Copy the `.env.example` file to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+Update the `.env` file with your database and other configuration details.
+
+---
+
+### 4. Generate Application Key
+
+Generate the application key:
+
+```bash
+php artisan key:generate
+```
+
+---
+
+### 5. Run Migrations
+
+Run database migrations to set up the database schema:
+
+```bash
+php artisan migrate
+```
+
+---
+
+### 6. Run the Development Server
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+The application will be available at [http://localhost:8000](http://localhost:8000).
+
+---
+
+### 7. Build Frontend Assets
+
+Compile the frontend assets:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+---
+
+🎉 **Your Laravel application should now be up and running!**
