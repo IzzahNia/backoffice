@@ -19,6 +19,10 @@ Route::get('/events', function () {
     return view('events.index');
 })->middleware(['auth', 'verified'])->name('events');
 
+Route::get('/application', function () {
+    return view('application.index');
+})->middleware(['auth', 'verified'])->name('application');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
