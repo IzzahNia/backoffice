@@ -22,6 +22,11 @@ class Application extends Model
         return $this->hasMany(ApplicationReview::class);
     }
 
+    public function review()
+    {
+        return $this->hasOne(ApplicationReview::class);
+    }
+
     public function event()
     {
         return $this->belongsTo(Event::class);

@@ -77,8 +77,14 @@
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
+                        Reviewed By
                     </th>
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Review Date
+                    </th>
+                    {{-- <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -94,10 +100,27 @@
                             </span>
                         </td>
                         <td class="px-6 py-3 text-center text-xs">
-                            <button wire:click="approve({{ $application->id }})" class="text-green-500 hover:text-green-700">Approve</button>
-                            <button wire:click="reject({{ $application->id }})" class="text-red-500 hover:text-red-700 ml-2">Reject</button>
-                            <button wire:click="delete({{ $application->id }})" class="text-gray-500 hover:text-gray-700 ml-2">Delete</button>
+                            {{ $application->review->admin->name ?? 'N/A' }}
                         </td>
+                        @if ($application->review)
+                            <td class="px-6 py-3 text-center text-xs">
+                                {{ $application->review->created_at->format('Y-m-d H:i:s') }}
+                            </td>
+                        @else
+                            <td class="px-6 py-3 text-center text-xs">
+                                N/A
+                            </td>
+                        @endif
+                        @if ($application->status === 'pending')
+                            <td class="px-6 py-3 text-center text-xs">
+                                {{-- <button wire:click="approve({{ $application->id }})" class="text-green-500 hover:text-green-700">Approve</button> --}}
+                                {{-- <button wire:click="reject({{ $application->id }})" class="text-red-500 hover:text-red-700 ml-2">Reject</button> --}}
+                            </td>
+                        @else
+                            <td class="px-6 py-3 text-center text-xs">
+                                {{-- <button wire:click="delete({{ $application->id }})" class="text-gray-500 hover:text-gray-700">Delete</button> --}}
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

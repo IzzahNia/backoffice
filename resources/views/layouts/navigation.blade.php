@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('application')" :active="request()->routeIs('application')">
                         {{ __('Application') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('review')" :active="request()->routeIs('review')">
+                        {{ __('Application Review') }}
+                    </x-nav-link>
                 </div>
             </div>
 
