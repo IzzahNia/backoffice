@@ -47,4 +47,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Check if the user has a specific role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role; // Assumes a 'role' column exists in the users table
+    }
 }
