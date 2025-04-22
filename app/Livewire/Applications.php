@@ -25,6 +25,7 @@ class Applications extends Component
         } else {
             session()->flash('error', 'Event not found.');
         }
+        return redirect()->route('application');
     }
 
     public $title;
@@ -55,6 +56,7 @@ class Applications extends Component
 
         $this->reset(['title', 'description', 'event_id']);
         session()->flash('message', 'Event created successfully!');
+        return redirect()->route('application');
     }
 
     public function approve($id)
@@ -66,6 +68,7 @@ class Applications extends Component
         } else {
             session()->flash('error', 'Application not found.');
         }
+        return redirect()->route('application');
     }
 
     public function reject($id)
@@ -77,15 +80,21 @@ class Applications extends Component
         } else {
             session()->flash('error', 'Application not found.');
         }
+        return redirect()->route('application');
     }
 
     public function render()
     {
-        $applications = Application::latest()->paginate(10);
-        $events = Event::where('user_id', Auth::id())
-                   ->where('is_verified', 0) // Assuming 0 means "pending"
-                   ->get();
-
+        // Check if the authenticated user is an admin
+        if (Auth::user()->hasRole('admin')) {
+            $applications = Application::latest()->paginate(10);
+            $events = Event::where('is_verified', 0)->get();
+        } else {
+            $applications = Application::where('user_id', Auth::id())->latest()->paginate(10);
+            $events = Event::where('user_id', Auth::id())
+                    ->where('is_verified', 0)
+                    ->get();
+        }
 
 
         return view('livewire.applications', compact('applications', 'events'));

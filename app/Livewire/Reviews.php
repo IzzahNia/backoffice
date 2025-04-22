@@ -43,6 +43,7 @@ class Reviews extends Component
             // Close the modal and refresh the list
             $this->closeModal();
             session()->flash('message', 'Application approved successfully!');
+            return redirect()->route('review');
         }
     }
 
@@ -62,6 +63,7 @@ class Reviews extends Component
             // Close the modal and refresh the list
             $this->closeModal();
             session()->flash('message', 'Application rejected successfully!');
+            return redirect()->route('review');
         }
     }
 

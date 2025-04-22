@@ -14,9 +14,15 @@ class Events extends Component
     public function delete($id)
     {
         $event = Event::find($id);
-        if ($event) {
-            $event->delete();
 
+        if ($event) {
+            // Check if the event has associated applications
+            if ($event->applications()->exists()) {
+                session()->flash('error', 'Event cannot be deleted because it has associated applications.');
+                return redirect()->route('events');
+            }
+
+            $event->delete();
             if (Event::paginate(10)->isEmpty()) {
                 $this->resetPage();
             }
@@ -24,6 +30,7 @@ class Events extends Component
         } else {
             session()->flash('error', 'Event not found.');
         }
+        return redirect()->route('events');
     }
 
     public $name;
@@ -62,11 +69,19 @@ class Events extends Component
 
         $this->reset(['name', 'description', 'start_time', 'end_time', 'location', 'is_verified']);
         session()->flash('message', 'Event created successfully!');
+        return redirect()->route('events');
     }
 
     public function render()
     {
-        $events = Event::latest()->paginate(10);
+        // Check if the authenticated user is an admin
+        if (Auth::user()->hasRole('admin')) {
+            // List all events for admin
+            $events = Event::latest()->paginate(10);
+        } else {
+            // List only the authenticated user's events
+            $events = Event::where('user_id', Auth::id())->latest()->paginate(10);
+        }
 
         return view('livewire.events', compact('events'));
     }

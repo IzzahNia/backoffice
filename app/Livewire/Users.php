@@ -25,6 +25,7 @@ class Users extends Component
         } else {
             session()->flash('error', 'User not found.');
         }
+        return redirect()->route('users');
     }
 
     public $name;
@@ -54,6 +55,7 @@ class Users extends Component
         session()->flash('message', 'User created successfully!');
 
         // $this->emit('userCreated');
+        return redirect()->route('users');
     }
 
     public function render()
