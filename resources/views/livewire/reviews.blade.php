@@ -43,28 +43,39 @@
 
     {{-- Modal --}}
     @if ($showModal)
-    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-        <div class="bg-white rounded-lg shadow-lg w-1/3">
-            <div class="p-4 border-b">
-                <h3 class="text-lg font-semibold">Review Application</h3>
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-1/3">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    Review Application
+                </h3>
             </div>
-            <div class="p-4">
+            <div class="p-6">
                 @if ($selectedApplication)
-                    <p><strong>Application ID:</strong> {{ $selectedApplication->id }}</p>
-                    <p><strong>Title:</strong> {{ $selectedApplication->title }}</p>
-                    <p><strong>Description:</strong> {{ $selectedApplication->description }}</p>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Application ID</label>
+                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $selectedApplication->id }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $selectedApplication->title }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $selectedApplication->description }}</p>
+                    </div>
                 @else
-                    <p>Loading application details...</p>
+                    <p class="text-gray-700 dark:text-gray-300">Loading application details...</p>
                 @endif
             </div>
-            <div class="p-4 border-t flex justify-end space-x-2">
-                <button wire:click="approveApplication" class="bg-green-500 text-white px-4 py-2 rounded">
+            <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-2">
+                <button wire:click="approveApplication" class="bg-green-500 text-white px-4 py-2 rounded-md">
                     Approve
                 </button>
-                <button wire:click="rejectApplication" class="bg-red-500 text-white px-4 py-2 rounded">
+                <button wire:click="rejectApplication" class="bg-red-500 text-white px-4 py-2 rounded-md">
                     Reject
                 </button>
-                <button wire:click="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded">
+                <button wire:click="closeModal" class="bg-gray-500 text-white px-4 py-2 rounded-md">
                     Cancel
                 </button>
             </div>
