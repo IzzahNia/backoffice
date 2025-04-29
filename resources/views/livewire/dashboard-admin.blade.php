@@ -7,56 +7,26 @@
                     <p class="text-sm text-gray-500">Applications awaiting your review</p>
                 </div>
                 <span class="inline-flex items-center justify-center px-3 py-1 text-sm font-medium text-white bg-yellow-500 rounded-full">
-                    5
+                    {{ count($pendingReviews) }}
                 </span>
             </div>
 
             <ul class="mt-4 space-y-4 min-h-80 max-h-80 overflow-y-auto">
-                <li class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-medium text-gray-700">John Doe</p>
-                            <p class="text-xs text-gray-400">Submitted on Apr 18, 2025</p>
+                @forelse ($pendingReviews as $review)
+                    <li class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-700">{{ $review->title }} <span class="text-sm text-gray-500">by {{ $review->user->name }}</span></p>
+                                <p class="text-xs text-gray-400">Submitted on {{ $review->created_at->format('M d, Y') }}</p>
+                            </div>
+                            <a href="{{ route('review') }}" class="text-blue-500 hover:underline text-sm">Review</a>
                         </div>
-                        <a href="#" class="text-blue-500 hover:underline text-sm">Review</a>
-                    </div>
-                </li>
-                <li class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-medium text-gray-700">Jane Smith</p>
-                            <p class="text-xs text-gray-400">Submitted on Apr 17, 2025</p>
-                        </div>
-                        <a href="#" class="text-blue-500 hover:underline text-sm">Review</a>
-                    </div>
-                </li>
-                <li class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-medium text-gray-700">Michael Tan</p>
-                            <p class="text-xs text-gray-400">Submitted on Apr 16, 2025</p>
-                        </div>
-                        <a href="#" class="text-blue-500 hover:underline text-sm">Review</a>
-                    </div>
-                </li>
-                <li class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-medium text-gray-700">Aisha Rahman</p>
-                            <p class="text-xs text-gray-400">Submitted on Apr 15, 2025</p>
-                        </div>
-                        <a href="#" class="text-blue-500 hover:underline text-sm">Review</a>
-                    </div>
-                </li>
-                <li class="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <p class="font-medium text-gray-700">Lucas Wong</p>
-                            <p class="text-xs text-gray-400">Submitted on Apr 14, 2025</p>
-                        </div>
-                        <a href="#" class="text-blue-500 hover:underline text-sm">Review</a>
-                    </div>
-                </li>
+                    </li>
+                @empty
+                    <li class="p-3 bg-gray-50 rounded-lg">
+                        <p class="text-center text-gray-500">No pending applications</p>
+                    </li>
+                @endforelse
             </ul>
         </div>
     </div>
