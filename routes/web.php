@@ -27,6 +27,8 @@ Route::get('/review', function () {
     return view('review.index');
 })->middleware(['auth', 'verified'])->name('review');
 
+Route::get('/apply/{type}', \App\Livewire\ApplicationForm::class)->middleware(['auth', 'verified'])->name('apply');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

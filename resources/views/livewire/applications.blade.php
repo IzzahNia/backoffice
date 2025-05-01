@@ -1,8 +1,10 @@
 <div>
     <div>
-        <div class="p-4 mt-4">
-            <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md">Create Application</button>
-        </div>
+        @canany(['isUser', 'isVendor'])
+            <div class="p-4 mt-4">
+                <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-md">Create Application</button>
+            </div>
+        @endcanany
 
         @if ($errors->any())
             <div class="p-4 mt-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
@@ -25,35 +27,8 @@
                                     Create Application
                                 </h3>
                             </div>
-                            <div class="p-6">
-                                <form wire:submit.prevent="create" id="createApplicationForm">
-                                    <div class="mb-4">
-                                        <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
-                                        <input type="text" id="title" name="title" wire:model="title" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                                        <textarea id="description" name="description" wire:model="description" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"></textarea>
-                                    </div>
-                                    {{-- Todo: display all event that related to user and pending --}}
-                                    <div class="mb-4">
-                                        <label for="event_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Event</label>
-                                        <select id="event_id" name="event_id" wire:model="event_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                                            <option value="">Select Event</option>
-                                            @foreach ($events as $event)
-                                                <option value="{{ $event->id }}">{{ $event->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
-                                        <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded-md mr-2">
-                                            Cancel
-                                        </button>
-                                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">
-                                            Create
-                                        </button>
-                                    </div>
-                                </form>
+                            <div class="p-6" id="createApplicationForm">
+                                @livewire('application-form', ['type' => Auth::user()->role])
                             </div>
                         </div>
                     </div>
