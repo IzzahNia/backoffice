@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Application;
+use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -18,11 +19,20 @@ class ApplicationForm extends Component
     public $type; // e.g., 'member', 'vendor', 'collaborator'
     public $fields = []; // Config for fields (like label, name, type)
     public $form = [];   // Bound values
+    public array $userEvents = [];
+    public $selectedEvent = null;
 
     public function mount($type)
     {
         $this->type = $type;
         $this->fields = $this->getFormFields($type);
+
+        // Fill options dynamically for the event field
+        foreach ($this->fields as &$field) {
+            if ($field['name'] === 'event_id' && $field['type'] === 'select') {
+                $field['options'] = Event::where('user_id', Auth::id())->where('is_verified', 1)->get()->map(fn($event) => ['value' => $event->id, 'label' => $event->name])->toArray();
+            }
+        }
     }
 
     protected function getFormFields($type)
@@ -38,6 +48,7 @@ class ApplicationForm extends Component
             'vendor' => [
                 ['name' => 'company_name', 'label' => 'Company Name', 'type' => 'text'],
                 ['name' => 'proposal_file', 'label' => 'Proposal File', 'type' => 'file'],
+                ['name' => 'event_id', 'label' => 'Event', 'type' => 'select', 'options' => []],
             ],
             'collaborator' => [
                 ['name' => 'portfolio_url', 'label' => 'Portfolio URL', 'type' => 'url'],
@@ -83,6 +94,9 @@ class ApplicationForm extends Component
             if ($field['type'] === 'file' && isset($this->form[$field['name']])) {
                 $uploaded[$field['name']] = $this->form[$field['name']]->store("applications/{$this->type}", 'public');
             }
+            if ($field['type'] === 'select' && $field['name'] === 'event_id') {
+                $this->selectedEvent = $this->form[$field['name']];
+            }
         }
 
         Application::create([
@@ -91,6 +105,7 @@ class ApplicationForm extends Component
             'status' => 'pending',
             'type' => $this->type,
             'data' => ['form' => array_merge($validated, $uploaded)] ,
+            'event_id' => $this->selectedEvent ?: null,
         ]);
 
         session()->flash('success', 'Application submitted successfully.');
@@ -107,6 +122,7 @@ class ApplicationForm extends Component
                 'tel' => 'required|string',
                 'file' => 'file|max:2048',
                 // 'file' => 'required|file|max:2048',
+                'select' => ['required', Rule::in(array_map('strval', array_column($field['options'] ?? [], 'value')))],
                 default => 'required|string'
             };
         }

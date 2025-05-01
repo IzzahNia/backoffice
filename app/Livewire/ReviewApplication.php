@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Application;
 use App\Models\ApplicationReview;
+use App\Models\Event;
 
 class ReviewApplication extends Component
 {
@@ -12,11 +13,13 @@ class ReviewApplication extends Component
     public array $fields = [];
     public string $status = '';
     public string $reviewNote = '';
+    public Event $event;
 
     public function mount(Application $application)
     {
         $this->application = $application;
         $this->fields = $this->resolveFields($application->type);
+        $this->event = $application->event ?? null;
     }
 
     protected function resolveFields(string $type): array
@@ -32,6 +35,7 @@ class ReviewApplication extends Component
             'vendor' => [
                 ['name' => 'company_name', 'label' => 'Company Name', 'type' => 'text'],
                 ['name' => 'proposal_file', 'label' => 'Proposal File', 'type' => 'file'],
+                ['name' => 'event_id', 'label' => 'Event', 'type' => 'select', 'options' => []],
             ],
             'collaborator' => [
                 ['name' => 'portfolio_url', 'label' => 'Portfolio URL', 'type' => 'url'],

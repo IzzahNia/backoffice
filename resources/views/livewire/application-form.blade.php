@@ -12,6 +12,15 @@
                     <input type="file" wire:model="form.{{ $field['name'] }}" class="w-full border rounded p-2">
                     @break
 
+                @case('select' && $field['name'] == 'event_id')
+                    <select wire:model="form.{{ $field['name'] }}" class="w-full border rounded p-2">
+                        <option value="">-- Select --</option>
+                        @foreach ($field['options'] as $option)
+                            <option value="{{ $option['value'] }}">{{ $option['label'] }}</option>
+                        @endforeach
+                    </select>
+                    @break
+
                 @default
                     <input type="{{ $field['type'] }}"
                         wire:model.defer="form.{{ $field['name'] }}"

@@ -12,8 +12,12 @@
                     <a href="{{ Storage::url($value) }}" target="_blank" class="text-blue-600 underline">
                         View File
                     </a>
+                @elseif ($field['type'] === 'select' && $field['name'] == 'event_id')
+                    <div class="text-gray-700">
+                        {{ $event ? $event->name : 'N/A' }}
+                    </div>
                 @else
-                    <div class="text-gray-700">{{ $value }}</div>
+                    <div class="text-gray-700">{{ $value ?: 'N/A' }}</div>
                 @endif
             </div>
         @endforeach
