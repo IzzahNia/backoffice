@@ -52,22 +52,17 @@
             </div>
             <div class="p-6">
                 @if ($selectedApplication)
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Application ID</label>
-                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $selectedApplication->id }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
-                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $selectedApplication->title }}</p>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                        <p class="mt-1 text-gray-900 dark:text-gray-100">{{ $selectedApplication->description }}</p>
-                    </div>
+                    @livewire('review-application', ['application' => $selectedApplication])
                 @else
                     <p class="text-gray-700 dark:text-gray-300">Loading application details...</p>
                 @endif
             </div>
+
+            <div class="px-6 mb-4">
+                <label for="comment" class="block text-sm font-medium text-gray-700 dark:text-gray-300">comment</label>
+                <textarea id="comment" name="comment" wire:model="comment" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"></textarea>
+            </div>
+
             <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-2">
                 <button wire:click="approveApplication" class="bg-green-500 text-white px-4 py-2 rounded-md">
                     Approve
@@ -105,6 +100,9 @@
                 <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Review Date
                 </th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Comment
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -119,6 +117,7 @@
                     <td class="px-6 py-3 text-center text-xs">
                         {{ $application->review->created_at->format('Y-m-d H:i') ?? 'N/A' }}
                     </td>
+                    <td class="px-6 py-3 text-center text-xs capitalize">{{ $application->review->comment }}</td>
                 </tr>
             @endforeach
         </tbody>

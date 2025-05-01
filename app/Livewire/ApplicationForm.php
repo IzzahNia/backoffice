@@ -90,7 +90,7 @@ class ApplicationForm extends Component
             'title' => $this->type . '_' . random_int(1000, 9999),
             'status' => 'pending',
             'type' => $this->type,
-            'data' => json_encode(array_merge($validated, $uploaded))
+            'data' => ['form' => array_merge($validated, $uploaded)] ,
         ]);
 
         session()->flash('success', 'Application submitted successfully.');
@@ -105,7 +105,8 @@ class ApplicationForm extends Component
             $rules["form.{$field['name']}"] = match ($field['type']) {
                 'email' => 'required|email',
                 'tel' => 'required|string',
-                'file' => 'required|file|max:2048',
+                'file' => 'file|max:2048',
+                // 'file' => 'required|file|max:2048',
                 default => 'required|string'
             };
         }

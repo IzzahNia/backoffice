@@ -14,6 +14,7 @@ class Reviews extends Component
 
     public $showModal = false;
     public $selectedApplication;
+    public string $comment = '';
 
     public function openModal($applicationId)
     {
@@ -34,7 +35,7 @@ class Reviews extends Component
             ApplicationReview::create([
                 'application_id' => $this->selectedApplication->id,
                 'admin_id' => Auth::id(),
-                'comment' => 'Application approved.',
+                'comment' => $this->comment ?? 'Application approved.',
             ]);
 
             // Update the application's status
@@ -54,7 +55,7 @@ class Reviews extends Component
             ApplicationReview::create([
                 'application_id' => $this->selectedApplication->id,
                 'admin_id' => Auth::id(),
-                'comment' => 'Application rejected.',
+                'comment' => $this->comment ??'Application rejected.',
             ]);
 
             // Update the application's status

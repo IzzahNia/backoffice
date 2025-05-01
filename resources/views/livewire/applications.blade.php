@@ -57,6 +57,9 @@
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Review Date
                     </th>
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Comment
+                    </th>
                     {{-- <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Actions
                     </th> --}}
@@ -86,6 +89,9 @@
                                 N/A
                             </td>
                         @endif
+                        <td class="px-6 py-3 text-center text-xs">
+                            {{ $application->review->comment ?? 'N/A' }}
+                        </td>
                         @if ($application->status === 'pending')
                             <td class="px-6 py-3 text-center text-xs">
                                 {{-- <button wire:click="approve({{ $application->id }})" class="text-green-500 hover:text-green-700">Approve</button> --}}

@@ -12,6 +12,10 @@ class Application extends Model
 
     protected $fillable = ['title', 'description', 'user_id', 'event_id', 'status', 'type', 'data'];
 
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
