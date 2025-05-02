@@ -60,9 +60,9 @@
                     <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Comment
                     </th>
-                    {{-- <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Actions
-                    </th> --}}
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -100,6 +100,8 @@
                         @else
                             <td class="px-6 py-3 text-center text-xs">
                                 {{-- <button wire:click="delete({{ $application->id }})" class="text-gray-500 hover:text-gray-700">Delete</button> --}}
+                                {{-- add modal to open the view --}}
+                                <a href="{{ route('viewApplication', $application) }}" class="text-blue-500 hover:text-blue-700">View</a>
                             </td>
                         @endif
                     </tr>

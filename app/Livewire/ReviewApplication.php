@@ -19,7 +19,9 @@ class ReviewApplication extends Component
     {
         $this->application = $application;
         $this->fields = $this->resolveFields($application->type);
-        $this->event = $application->event ?? null;
+        if ($application->event) {
+            $this->event = $application->event;
+        }
     }
 
     protected function resolveFields(string $type): array

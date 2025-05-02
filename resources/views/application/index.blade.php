@@ -24,5 +24,13 @@
         function closeModal() {
             document.getElementById('createApplicationModal').classList.add('hidden');
         }
+
+        function openViewModal() {
+            document.getElementById('viewApplicationModal').classList.remove('hidden');
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewApplicationModal').classList.add('hidden');
+        }
     </script>
 </x-app-layout>
