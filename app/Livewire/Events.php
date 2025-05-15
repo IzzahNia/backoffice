@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
+use App\Enums\UserRole;
 
 class Events extends Component
 {
@@ -75,7 +76,7 @@ class Events extends Component
     public function render()
     {
         // Check if the authenticated user is an admin
-        if (Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole(UserRole::ADMIN)) {
             // List all events for admin
             $events = Event::latest()->paginate(10);
         } else {

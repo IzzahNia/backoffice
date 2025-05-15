@@ -44,7 +44,7 @@
                                     {{ Auth::user()->name }}
                                 </span>
                                 <span class="text-xs text-gray-500 dark:text-gray-400">
-                                    {{ ucfirst(Auth::user()->role) }}
+                                    {{ ucfirst(Auth::user()->role->value) }}
                                 </span>
                             </div>
 

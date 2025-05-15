@@ -7,6 +7,7 @@ use Livewire\WithPagination;
 use App\Models\Application;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\UserRole;
 
 class Applications extends Component
 {
@@ -86,7 +87,7 @@ class Applications extends Component
     public function render()
     {
         // Check if the authenticated user is an admin
-        if (Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole(UserRole::ADMIN)) {
             $applications = Application::latest()->paginate(10);
             $events = Event::where('is_verified', 0)->get();
         } else {

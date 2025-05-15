@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Enums\UserRole;
 
 class RolePolicy
 {
@@ -16,16 +17,16 @@ class RolePolicy
 
     public function isAdmin(User $user)
     {
-        return $user->hasRole('admin'); // Check if the user is an admin
+        return $user->hasRole(UserRole::ADMIN); // Use enum value
     }
 
     public function isUser(User $user)
     {
-        return $user->hasRole('user'); // Check if the user is a regular user
+        return $user->hasRole(UserRole::USER); // Use enum value
     }
 
     public function isVendor(User $user)
     {
-        return $user->hasRole('vendor'); // Check if the user is a vendor
+        return $user->hasRole(UserRole::VENDOR); // Use enum value
     }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Role;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Enums\UserRole;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'superadmin@backoffice.test',
             'password' => bcrypt('admin123'),
             'email_verified_at' => now(),
-            'role' => 'admin', // Assign the 'admin' role to the Super Admin
+            'role' => UserRole::ADMIN->value, // Assign the 'admin' role to the Super Admin
         ]);
 
         // Create 20 random users with roles

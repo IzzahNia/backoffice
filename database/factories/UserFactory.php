@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Enums\UserRole;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -28,7 +29,7 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => fake()->boolean(70) ? now() : null,
             'password' => static::$password ??= Hash::make('password'),
-            'role' => fake()->randomElement(['admin', 'user', 'vendor']),
+           'role' => fake()->randomElement(array_map(fn($role) => $role->value, UserRole::cases())),
             'remember_token' => Str::random(10),
         ];
     }

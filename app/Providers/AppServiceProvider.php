@@ -22,8 +22,14 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Register the RolePolicy globally
-        Gate::define('isAdmin', [RolePolicy::class, 'isAdmin']);
-        Gate::define('isUser', [RolePolicy::class, 'isUser']);
-        Gate::define('isVendor', [RolePolicy::class, 'isVendor']);
+        Gate::define('isAdmin', function ($user) {
+            return (new RolePolicy)->isAdmin($user);
+        });
+        Gate::define('isUser', function ($user) {
+            return (new RolePolicy)->isUser($user);
+        });
+        Gate::define('isVendor', function ($user) {
+            return (new RolePolicy)->isVendor($user);
+        });
     }
 }
