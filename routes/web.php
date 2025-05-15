@@ -37,4 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::prefix('v2')->group(function () {
+    Route::get('/applications', function () {
+        return view('v2.applications.index');
+    })->middleware(['auth', 'verified'])->name('review');
+});
+
 require __DIR__.'/auth.php';

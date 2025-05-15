@@ -28,7 +28,7 @@
                                 </h3>
                             </div>
                             <div class="p-6" id="createApplicationForm">
-                                @livewire('application-form', ['type' => Auth::user()->role])
+                                @livewire('application-form', ['type' => Auth::user()->role->value])
                             </div>
                         </div>
                     </div>
