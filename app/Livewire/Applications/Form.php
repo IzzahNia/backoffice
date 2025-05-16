@@ -144,7 +144,7 @@ class Form extends Component
             $this->status = $application->status;
             $this->type = $application->type;
             $this->mode = 'edit';
-            $this->form = $application->data ?? [];
+            $this->form = $application->data['form'] ?? [];
         } else {
             $this->reset(['applicationId', 'title', 'description', 'event_id', 'status', 'type', 'form']);
             $this->status = 'pending';

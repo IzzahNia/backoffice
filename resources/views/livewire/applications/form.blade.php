@@ -88,7 +88,6 @@
                                                     <option value="{{ $optionValue }}">{{ $optionLabel }}</option>
                                                 @endforeach
                                             </select>
-                                            {{-- You can add extra info or validation for event_id here --}}
                                         @else
                                             <select
                                                 wire:model.defer="form.{{ $field['name'] }}"
@@ -136,6 +135,14 @@
 
                                     @case('file')
                                     @case('upload_file')
+                                        @php
+                                            $existingFile = $form[$field['name']] ?? null;
+                                        @endphp
+                                        @if($existingFile && is_string($existingFile))
+                                            <div class="mb-2">
+                                                <a href="{{ Storage::url($existingFile) }}" target="_blank" class="text-blue-500 underline">View Current File</a>
+                                            </div>
+                                        @endif
                                         <input
                                             type="file"
                                             wire:model="form.{{ $field['name'] }}"
@@ -146,18 +153,22 @@
 
                                     @case('image')
                                     @case('upload_image')
+                                        @php
+                                            $existingImage = $form[$field['name']] ?? null;
+                                        @endphp
+                                        @if($existingImage && is_string($existingImage))
+                                            <div class="mb-2">
+                                                <a href="{{ Storage::url($existingImage) }}" target="_blank">
+                                                    <img src="{{ Storage::url($existingImage) }}" alt="Current Image" class="h-20 inline-block rounded shadow" />
+                                                </a>
+                                            </div>
+                                        @endif
                                         <input
                                             type="file"
                                             wire:model="form.{{ $field['name'] }}"
                                             accept="image/*"
                                             class="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                                         />
-                                        @php $property = $field['name']; @endphp
-                                        @if(isset($form[$property]) && $form[$property])
-                                            <div class="mt-2">
-                                                <img src="{{ $form[$property]->temporaryUrl() }}" class="h-20" />
-                                            </div>
-                                        @endif
                                         @break
 
                                     @default
