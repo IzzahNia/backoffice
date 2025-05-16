@@ -17,11 +17,23 @@
                                 <div>
                                     <span class="font-semibold">{{ $field['label'] }}:</span>
                                     <span>
-                                        @php $value = $viewData[$field['name']] ?? '-'; @endphp
+                                        @php $value = $viewData['form'][$field['name']] ?? '-'; @endphp
                                         @if(is_array($value))
                                             {{ implode(', ', $value) }}
-                                        @elseif(Str::startsWith(($field['type'] ?? ''), 'upload') && $value && is_string($value))
-                                            <a href="{{ Storage::url($value) }}" target="_blank" class="text-blue-500 underline">View File</a>
+                                        @elseif(
+                                            (in_array($field['type'], ['file', 'upload_file', 'image', 'upload_image']) && $value && is_string($value))
+                                        )
+                                            @php
+                                                $url = Storage::url($value);
+                                                $isImage = Str::endsWith(strtolower($value), ['.jpg', '.jpeg', '.png', '.gif', '.webp']);
+                                            @endphp
+                                            @if($isImage)
+                                                <a href="{{ $url }}" target="_blank">
+                                                    <img src="{{ $url }}" alt="Image" class="h-20 inline-block rounded shadow" />
+                                                </a>
+                                            @else
+                                                <a href="{{ $url }}" target="_blank" class="text-blue-500 underline">View Document</a>
+                                            @endif
                                         @else
                                             {{ $value }}
                                         @endif

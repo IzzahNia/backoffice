@@ -95,6 +95,34 @@ class Form extends Component
         };
     }
 
+    public function validateFields()
+    {
+        $rules = [];
+
+        foreach ($this->fields as $field) {
+            $key = "form.{$field['name']}";
+
+            // Special case for event_id
+            if ($field['name'] === 'event_id') {
+                $rules[$key] = 'nullable|exists:events,id';
+                continue;
+            }
+
+            $rules[$key] = match ($field['type']) {
+                'email' => 'required|email',
+                'tel' => 'required|string',
+                'file', 'upload_file', 'image', 'upload_image' => 'nullable|file|max:2048',
+                'select' => ['required'],
+                'text', 'textarea', 'url', 'date', 'datetime-local' => 'required',
+                'radio' => 'required',
+                'checkbox' => 'array',
+                default => 'nullable',
+            };
+        }
+
+        return $this->validate($rules);
+    }
+
     public function view($applicationId, $type)
     {
         $application = Application::findOrFail($applicationId);
@@ -136,31 +164,42 @@ class Form extends Component
     public function save()
     {
         // $this->validate(); // Add validation as needed
+        $validated = $this->validateFields();
 
         // Generate a unique 5-digit ID using current time and random number
         $uniqueId = time() . rand(10000, 99999);
 
-        $eventId = $this->event_id ?: null;
+        $uploaded = [];
+        $selectedEvent = null;
+
+        foreach ($this->fields as $field) {
+        if (in_array($field['type'], ['file', 'upload_file', 'image', 'upload_image']) && isset($this->form[$field['name']]) && is_object($this->form[$field['name']])) {
+            $uploaded[$field['name']] = $this->form[$field['name']]->store("applications/{$this->type}", 'public');
+        }
+        if ($field['type'] === 'select' && $field['name'] === 'event_id') {
+            $selectedEvent = $this->form[$field['name']] ?? null;
+        }
+    }
 
         if ($this->mode === 'edit') {
             $application = Application::findOrFail($this->applicationId);
             $application->update([
                 'title' => $this->title,
                 'description' => $this->description,
-                'event_id' => $this->event_id,
+                'event_id' => $selectedEvent ?: null,
                 'status' => $this->status,
                 'type' => $this->type,
-                'data' => $this->form,
+                'data' => ['form' => array_merge($validated['form'], $uploaded)],
             ]);
         } else {
             Application::create([
                 'title' => $this->type . '-' . $uniqueId,
                 'description' => $this->description,
-                'event_id' => $eventId,
+                'event_id' => $selectedEvent ?: null,
                 'user_id' => Auth::id(),
                 'status' => $this->status,
                 'type' => $this->type,
-                'data' => $this->form,
+                'data' => ['form' => array_merge($validated['form'], $uploaded)],
             ]);
         }
 
