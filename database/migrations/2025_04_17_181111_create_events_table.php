@@ -18,6 +18,7 @@ return new class extends Migration
             $table->dateTime('start_time'); // Event start datetime
             $table->dateTime('end_time'); // Event end datetime
             $table->string('location'); // Event location (address)
+            $table->string('type');
             $table->boolean('is_verified')->default(false); // Verification status
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // User who created the event
             $table->softDeletes(); // Soft delete column

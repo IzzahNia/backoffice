@@ -40,7 +40,13 @@ Route::middleware('auth')->group(function () {
 Route::prefix('v2')->group(function () {
     Route::get('/applications', function () {
         return view('v2.applications.index');
-    })->middleware(['auth', 'verified'])->name('review');
+    })->middleware(['auth', 'verified'])->name('v2.applications');
+    Route::get('/users', function () {
+        return view('v2.users.index');
+    })->middleware(['auth', 'verified'])->name('v2.users');
+    Route::get('/events', function () {
+        return view('v2.events.index');
+    })->middleware(['auth', 'verified'])->name('v2.events');
 });
 
 require __DIR__.'/auth.php';
