@@ -82,6 +82,11 @@
                                 class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">
                                 Edit
                             </button>
+                            <button
+                                wire:click='$dispatch("viewApplication", { applicationId: {{ $application->id }}, type: "{{ $application->type }}" })'
+                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">
+                                View
+                            </button>
                             <!-- Add delete/approve/reject as needed -->
                         </td>
                     </tr>

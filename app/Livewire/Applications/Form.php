@@ -5,22 +5,29 @@ namespace App\Livewire\Applications;
 use App\Models\Application;
 use App\Models\Event;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 
 class Form extends Component
 {
+    use WithFileUploads;
+
     public $applicationId;
     public $title = '';
     public $description = '';
     public $event_id = '';
     public $status = 'pending';
-    public $type = 'all_types'; // default type
+    public $type = 'vendor'; // default type
     public $showModal = false;
     public $mode = 'create';
 
     public $fields = [];
+    public $form = [];
 
-    protected $listeners = ['showApplicationForm' => 'show', 'hideApplicationForm' => 'hide'];
+    public $viewing = false;
+    public $viewData = [];
+
+    protected $listeners = ['showApplicationForm' => 'show', 'hideApplicationForm' => 'hide', 'viewApplication' => 'view'];
 
     protected function rules()
     {
@@ -88,6 +95,16 @@ class Form extends Component
         };
     }
 
+    public function view($applicationId, $type)
+    {
+        $application = Application::findOrFail($applicationId);
+        $this->viewData = $application->data ?? [];
+        $this->type = $type;
+        $this->fields = $this->getFormFields($this->type);
+        $this->viewing = true;
+        $this->showModal = true;
+    }
+
     public function show($applicationId = null)
     {
         if ($applicationId) {
@@ -99,8 +116,9 @@ class Form extends Component
             $this->status = $application->status;
             $this->type = $application->type;
             $this->mode = 'edit';
+            $this->form = $application->data ?? [];
         } else {
-            $this->reset(['applicationId', 'title', 'description', 'event_id', 'status', 'type']);
+            $this->reset(['applicationId', 'title', 'description', 'event_id', 'status', 'type', 'form']);
             $this->status = 'pending';
             $this->mode = 'create';
         }
@@ -111,14 +129,18 @@ class Form extends Component
     public function hide()
     {
         $this->showModal = false;
+        $this->viewing = false;
+        $this->viewData = [];
     }
 
     public function save()
     {
-        // $this->validate();
+        // $this->validate(); // Add validation as needed
 
         // Generate a unique 5-digit ID using current time and random number
         $uniqueId = time() . rand(10000, 99999);
+
+        $eventId = $this->event_id ?: null;
 
         if ($this->mode === 'edit') {
             $application = Application::findOrFail($this->applicationId);
@@ -128,16 +150,17 @@ class Form extends Component
                 'event_id' => $this->event_id,
                 'status' => $this->status,
                 'type' => $this->type,
+                'data' => $this->form,
             ]);
         } else {
             Application::create([
                 'title' => $this->type . '-' . $uniqueId,
                 'description' => $this->description,
-                'event_id' => $this->event_id,
+                'event_id' => $eventId,
                 'user_id' => Auth::id(),
                 'status' => $this->status,
                 'type' => $this->type,
-                'data' => [],
+                'data' => $this->form,
             ]);
         }
 
