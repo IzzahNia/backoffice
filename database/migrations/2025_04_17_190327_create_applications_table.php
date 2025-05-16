@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // User who submitted the application
             $table->foreignId('event_id')->nullable()->constrained()->onDelete('cascade'); // Event the application is tied to
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Application status
+            $table->enum('type', ['user', 'vendor', 'collaborator', 'event', 'crew']);
+            $table->json('data'); // save value from form application
             $table->timestamps(); // Created at and updated at timestamps
             $table->softDeletes(); // Soft delete column
         });

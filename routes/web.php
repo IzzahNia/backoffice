@@ -47,6 +47,12 @@ Route::prefix('v2')->group(function () {
     Route::get('/events', function () {
         return view('v2.events.index');
     })->middleware(['auth', 'verified'])->name('v2.events');
+    Route::get('/applications', function () {
+        return view('v2.applications.index');
+    })->middleware(['auth', 'verified'])->name('v2.applications');
+    Route::get('/reviews', function () {
+        return view('v2.applicationReviews.index');
+    })->middleware(['auth', 'verified'])->name('v2.reviews');
 });
 
 require __DIR__.'/auth.php';
