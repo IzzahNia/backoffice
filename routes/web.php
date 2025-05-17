@@ -52,4 +52,6 @@ Route::prefix('v2')->group(function () {
     })->middleware(['auth', 'verified'])->name('v2.reviews');
 });
 
+Route::get('/applications/{application}', [App\Http\Controllers\ApplicationDetailsController::class, 'show'])->name('applications.details');
+
 require __DIR__.'/auth.php';

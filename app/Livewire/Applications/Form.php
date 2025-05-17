@@ -215,10 +215,7 @@ class Form extends Component
     public function save()
     {
         $validated = $this->validateFields();
-
-        // Generate a unique 5-digit ID using current time and random number
         $uniqueId = substr(time(), -4) . rand(100, 999);
-
         $uploaded = [];
         $selectedEvent = null;
 
@@ -241,8 +238,11 @@ class Form extends Component
                 'type' => $this->type,
                 'data' => ['form' => array_merge($validated['form'], $uploaded)],
             ]);
+            $this->dispatch('applicationSaved');
+            $this->dispatch('openApplicationDetails', id: $application->id);
+            $this->hide();
         } else {
-            Application::create([
+            $application = Application::create([
                 'title' => $this->type . '-' . $uniqueId,
                 'description' => $this->description,
                 'event_id' => $selectedEvent ?: null,
@@ -251,10 +251,10 @@ class Form extends Component
                 'type' => $this->type,
                 'data' => ['form' => array_merge($validated['form'], $uploaded)],
             ]);
+            $this->dispatch('applicationSaved');
+            $this->dispatch('openApplicationDetails', id: $application->id);
+            $this->hide();
         }
-
-        $this->dispatch('applicationSaved');
-        $this->hide();
     }
 
     public function render()

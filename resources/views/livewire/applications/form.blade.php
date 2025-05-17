@@ -225,3 +225,11 @@
         </div>
     @endif
 </div>
+
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('openApplicationDetails', ({id}) => {
+            window.open('/applications/' + id, '_blank');
+        });
+    });
+</script>
