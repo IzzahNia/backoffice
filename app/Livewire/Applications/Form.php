@@ -7,6 +7,7 @@ use App\Models\Event;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\UserRole;
 
 class Form extends Component
 {
@@ -17,7 +18,7 @@ class Form extends Component
     public $description = '';
     public $event_id = '';
     public $status = 'pending';
-    public $type = 'vendor'; // default type
+    public $type = '';
     public $showModal = false;
     public $mode = 'create';
 
@@ -38,11 +39,6 @@ class Form extends Component
             'status' => 'required|in:pending,approved,rejected',
             'type' => 'required|in:user,vendor,collaborator,event,crew',
         ];
-    }
-
-    public function mount()
-    {
-        $this->fields = $this->getFormFields($this->type);
     }
 
     protected function getFormFields($type)
@@ -128,6 +124,21 @@ class Form extends Component
         $application = Application::findOrFail($applicationId);
         $this->viewData = $application->data ?? [];
         $this->type = $type;
+        // Set type based on user role if not already set
+        if (empty($this->type) && Auth::check()) {
+            $user = Auth::user();
+            if ($user->hasRole(UserRole::VENDOR)) {
+                $this->type = 'vendor';
+            } elseif ($user->hasRole(UserRole::COLLABORATOR)) {
+                $this->type = 'collaborator';
+            } elseif ($user->hasRole(UserRole::CREW)) {
+                $this->type = 'crew';
+            } elseif ($user->hasRole(UserRole::HOST)) {
+                $this->type = 'host';
+            } else {
+                $this->type = 'user';
+            }
+        }
         $this->fields = $this->getFormFields($this->type);
         $this->viewing = true;
         $this->showModal = true;
@@ -149,6 +160,21 @@ class Form extends Component
             $this->reset(['applicationId', 'title', 'description', 'event_id', 'status', 'type', 'form']);
             $this->status = 'pending';
             $this->mode = 'create';
+        }
+        // Set type based on user role if not already set
+        if (empty($this->type) && Auth::check()) {
+            $user = Auth::user();
+            if ($user->hasRole(UserRole::VENDOR)) {
+                $this->type = 'vendor';
+            } elseif ($user->hasRole(UserRole::COLLABORATOR)) {
+                $this->type = 'collaborator';
+            } elseif ($user->hasRole(UserRole::CREW)) {
+                $this->type = 'crew';
+            } elseif ($user->hasRole(UserRole::HOST)) {
+                $this->type = 'host';
+            } else {
+                $this->type = 'user';
+            }
         }
         $this->fields = $this->getFormFields($this->type);
         $this->showModal = true;

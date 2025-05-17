@@ -19,13 +19,13 @@ Route::get('/events', function () {
     return view('events.index');
 })->middleware(['auth', 'verified'])->name('events');
 
-Route::get('/application', function () {
+Route::get('/applications', function () {
     return view('application.index');
-})->middleware(['auth', 'verified'])->name('application');
+})->middleware(['auth', 'verified'])->name('applications');
 
-Route::get('/review', function () {
+Route::get('/reviews', function () {
     return view('review.index');
-})->middleware(['auth', 'verified'])->name('review');
+})->middleware(['auth', 'verified'])->name('reviews');
 
 Route::get('/apply/{type}', \App\Livewire\ApplicationForm::class)->middleware(['auth', 'verified'])->name('apply');
 
@@ -38,9 +38,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('v2')->group(function () {
-    Route::get('/applications', function () {
-        return view('v2.applications.index');
-    })->middleware(['auth', 'verified'])->name('v2.applications');
     Route::get('/users', function () {
         return view('v2.users.index');
     })->middleware(['auth', 'verified'])->name('v2.users');

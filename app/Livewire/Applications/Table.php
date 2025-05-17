@@ -5,6 +5,7 @@ namespace App\Livewire\Applications;
 use App\Models\Application;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class Table extends Component
 {
@@ -41,10 +42,15 @@ class Table extends Component
     {
         $query = Application::query();
 
+        // Only show own applications if not admin
+        if (!Auth::user()->hasRole(\App\Enums\UserRole::ADMIN)) {
+            $query->where('user_id', Auth::id());
+        }
+
         if ($this->appliedFilters['search']) {
             $query->where(function($q) {
                 $q->where('title', 'like', '%'.$this->appliedFilters['search'].'%')
-                  ->orWhere('description', 'like', '%'.$this->appliedFilters['search'].'%');
+                ->orWhere('description', 'like', '%'.$this->appliedFilters['search'].'%');
             });
         }
 

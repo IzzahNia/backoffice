@@ -68,7 +68,7 @@ class Form extends Component
             $updateData = [
                 'name' => $this->name,
                 'email' => $this->email,
-                'role' => $this->role->value,
+                'role' => $this->role,
             ];
             if ($this->password) {
                 $updateData['password'] = bcrypt($this->password);
@@ -78,7 +78,7 @@ class Form extends Component
             User::create([
                 'name' => $this->name,
                 'email' => $this->email,
-                'role' => $this->role->value,
+                'role' => $this->role,
                 'password' => bcrypt($this->password),
             ]);
         }

@@ -16,18 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @can('isAdmin')
-                    <x-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                    <x-nav-link :href="route('v2.users')" :active="request()->routeIs('users')">
                         {{ __('Users') }}
                     </x-nav-link>
-                    @endcan
-                    <x-nav-link :href="route('events')" :active="request()->routeIs('events')">
+                    <x-nav-link :href="route('v2.events')" :active="request()->routeIs('events')">
                         {{ __('Events') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('application')" :active="request()->routeIs('application')">
+                    @endcan
+                    <x-nav-link :href="route('v2.applications')" :active="request()->routeIs('application')">
                         {{ __('Application') }}
                     </x-nav-link>
                     @can('isAdmin')
-                    <x-nav-link :href="route('review')" :active="request()->routeIs('review')">
+                    <x-nav-link :href="route('v2.reviews')" :active="request()->routeIs('review')">
                         {{ __('Application Review') }}
                     </x-nav-link>
                     @endcan
