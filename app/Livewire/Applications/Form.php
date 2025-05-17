@@ -13,7 +13,8 @@ class Form extends Component
 {
     use WithFileUploads;
 
-    public $applicationId;
+    public $application = null;
+    public $applicationId = null;
     public $title = '';
     public $description = '';
     public $event_id = '';
@@ -27,6 +28,9 @@ class Form extends Component
 
     public $viewing = false;
     public $viewData = [];
+
+    public $reviewComment = '';
+    public $reviewAction = '';
 
     protected $listeners = ['showApplicationForm' => 'show', 'hideApplicationForm' => 'hide', 'viewApplication' => 'view'];
 
@@ -121,9 +125,11 @@ class Form extends Component
 
     public function view($applicationId, $type)
     {
-        $application = Application::findOrFail($applicationId);
-        $this->viewData = $application->data ?? [];
+        $this->application = Application::findOrFail($applicationId);
+        $this->applicationId = $this->application->id;
+        $this->viewData = $this->application->data ?? [];
         $this->type = $type;
+        $this->status = $this->application->status;
         // Set type based on user role if not already set
         if (empty($this->type) && Auth::check()) {
             $user = Auth::user();
@@ -144,20 +150,38 @@ class Form extends Component
         $this->showModal = true;
     }
 
+    public function review()
+    {
+        $this->validate([
+            'reviewComment' => 'required|string|max:1000',
+            'reviewAction' => 'required|in:approved,rejected',
+        ]);
+
+        $application = Application::findOrFail($this->applicationId);
+        $application->update([
+            'status' => $this->reviewAction,
+            'reviewBy' => Auth::id(),
+            'comment' => $this->reviewComment,
+        ]);
+
+        $this->dispatch('applicationSaved');
+        $this->hide();
+    }
+
     public function show($applicationId = null)
     {
         if ($applicationId) {
-            $application = Application::findOrFail($applicationId);
-            $this->applicationId = $application->id;
-            $this->title = $application->title;
-            $this->description = $application->description;
-            $this->event_id = $application->event_id;
-            $this->status = $application->status;
-            $this->type = $application->type;
+            $this->application = Application::findOrFail($applicationId);
+            $this->applicationId = $this->application->id;
+            $this->title = $this->application->title;
+            $this->description = $this->application->description;
+            $this->event_id = $this->application->event_id;
+            $this->status = $this->application->status;
+            $this->type = $this->application->type;
             $this->mode = 'edit';
-            $this->form = $application->data['form'] ?? [];
+            $this->form = $this->application->data['form'] ?? [];
         } else {
-            $this->reset(['applicationId', 'title', 'description', 'event_id', 'status', 'type', 'form']);
+            $this->reset(['application', 'applicationId', 'title', 'description', 'event_id', 'status', 'type', 'form']);
             $this->status = 'pending';
             $this->mode = 'create';
         }
@@ -185,27 +209,27 @@ class Form extends Component
         $this->showModal = false;
         $this->viewing = false;
         $this->viewData = [];
+        $this->application = null;
     }
 
     public function save()
     {
-        // $this->validate(); // Add validation as needed
         $validated = $this->validateFields();
 
         // Generate a unique 5-digit ID using current time and random number
-        $uniqueId = time() . rand(10000, 99999);
+        $uniqueId = substr(time(), -4) . rand(100, 999);
 
         $uploaded = [];
         $selectedEvent = null;
 
         foreach ($this->fields as $field) {
-        if (in_array($field['type'], ['file', 'upload_file', 'image', 'upload_image']) && isset($this->form[$field['name']]) && is_object($this->form[$field['name']])) {
-            $uploaded[$field['name']] = $this->form[$field['name']]->store("applications/{$this->type}", 'public');
+            if (in_array($field['type'], ['file', 'upload_file', 'image', 'upload_image']) && isset($this->form[$field['name']]) && is_object($this->form[$field['name']])) {
+                $uploaded[$field['name']] = $this->form[$field['name']]->store("applications/{$this->type}", 'public');
+            }
+            if ($field['type'] === 'select' && $field['name'] === 'event_id') {
+                $selectedEvent = $this->form[$field['name']] ?? null;
+            }
         }
-        if ($field['type'] === 'select' && $field['name'] === 'event_id') {
-            $selectedEvent = $this->form[$field['name']] ?? null;
-        }
-    }
 
         if ($this->mode === 'edit') {
             $application = Application::findOrFail($this->applicationId);
@@ -237,6 +261,7 @@ class Form extends Component
     {
         return view('livewire.applications.form', [
             'fields' => $this->fields,
+            'application' => $this->application,
         ]);
     }
 }

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending'); // Application status
             $table->enum('type', ['user', 'vendor', 'collaborator', 'event', 'crew']);
             $table->json('data'); // save value from form application
+            $table->foreignId('reviewBy')->nullable()->constrained('users')->onDelete('cascade'); // reviewBy who reviewed
+            $table->text('comment')->nullable(); // Review comment
             $table->timestamps(); // Created at and updated at timestamps
             $table->softDeletes(); // Soft delete column
         });

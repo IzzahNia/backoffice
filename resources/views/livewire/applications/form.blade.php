@@ -41,6 +41,37 @@
                                 </div>
                             @endforeach
                         </div>
+                        @can('isAdmin')
+                            @if($viewing && $status === 'pending')
+                                <form wire:submit.prevent="review" class="mt-4 space-y-2">
+                                    <label class="block text-gray-700 dark:text-gray-200 font-semibold">Review Comment</label>
+                                    <textarea wire:model.defer="reviewComment" class="w-full border rounded px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"></textarea>
+                                    @error('reviewComment') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+
+                                    <div class="flex gap-2 mt-2">
+                                        <button type="submit" wire:click="$set('reviewAction', 'approved')" class="px-4 py-2 rounded bg-green-500 text-white">Approve</button>
+                                        <button type="submit" wire:click="$set('reviewAction', 'rejected')" class="px-4 py-2 rounded bg-red-500 text-white">Reject</button>
+                                    </div>
+                                </form>
+                            @endif
+                        @endcan
+
+                        @if($viewing && $status !== 'pending')
+                            <div class="mt-4 p-3 bg-gray-100 dark:bg-gray-700 rounded">
+                                <div>
+                                    <span class="font-semibold">Status:</span>
+                                    {{ ucfirst($status) }}
+                                </div>
+                                <div>
+                                    <span class="font-semibold">Reviewed By:</span>
+                                    {{ $application && $application->reviewBy ? optional(\App\Models\User::find($application->reviewBy))->name : '-' }}
+                                </div>
+                                <div>
+                                    <span class="font-semibold">Comment:</span>
+                                    {{ $application->comment ?? '-' }}
+                                </div>
+                            </div>
+                        @endif
                         <div class="flex justify-end mt-4">
                             <button type="button" wire:click="hide" class="px-4 py-2 rounded bg-gray-300 dark:bg-gray-600">Close</button>
                         </div>

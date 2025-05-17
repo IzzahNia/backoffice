@@ -10,7 +10,7 @@ class Application extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'user_id', 'event_id', 'status', 'type', 'data'];
+    protected $fillable = ['title', 'description', 'user_id', 'event_id', 'status', 'type', 'data', 'reviewBy', 'comment'];
 
     protected $casts = [
         'data' => 'array',

@@ -77,17 +77,20 @@
                         <td class="px-6 py-4">{{ ucfirst($application->status) }}</td>
                         <td class="px-6 py-4">{{ $application->event?->name ?? '-' }}</td>
                         <td class="px-6 py-4">
-                            <button
-                                wire:click='$dispatch("showApplicationForm", { applicationId: {{ $application->id }} })'
-                                class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">
-                                Edit
-                            </button>
+                            @can('isAdmin')
+                                @if($application->status === 'pending')
+                                    <button
+                                        wire:click='$dispatch("showApplicationForm", { applicationId: {{ $application->id }} })'
+                                        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">
+                                        Edit
+                                    </button>
+                                @endif
+                            @endcan
                             <button
                                 wire:click='$dispatch("viewApplication", { applicationId: {{ $application->id }}, type: "{{ $application->type }}" })'
                                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">
                                 View
                             </button>
-                            <!-- Add delete/approve/reject as needed -->
                         </td>
                     </tr>
                 @endforeach
