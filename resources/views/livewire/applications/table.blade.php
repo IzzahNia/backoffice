@@ -1,3 +1,4 @@
+{{-- filepath: resources/views/livewire/applications/table.blade.php --}}
 <div>
     <div class="flex flex-wrap gap-2 mb-4 w-full">
         <button
@@ -11,13 +12,12 @@
             type="text"
             wire:model.defer="filterInput.search"
             placeholder="Search applications..."
-            class="border rounded px-2 py-1 bg-white text-gray-900 placeholder-gray-400
-                dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-400 flex-1 min-w-[200px]"
+            class="border rounded px-2 py-1 bg-theme-four theme-secondary placeholder-gray-500 flex-1 min-w-[200px]"
         />
 
         <select
             wire:model.defer="filterInput.status"
-            class="border rounded px-2 py-1 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+            class="border rounded px-2 py-1 bg-theme-four theme-secondary"
         >
             <option value="">All Status</option>
             <option value="pending">Pending</option>
@@ -27,7 +27,7 @@
 
         <select
             wire:model.defer="filterInput.type"
-            class="border rounded px-2 py-1 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+            class="border rounded px-2 py-1 bg-theme-four theme-secondary"
         >
             <option value="">All Types</option>
             <option value="user">User</option>
@@ -39,7 +39,7 @@
 
         <select
             wire:model="filterInput.perPage"
-            class="w-32 border rounded px-2 py-1 bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+            class="w-32 border rounded px-2 py-1 bg-theme-four theme-secondary"
         >
             <option value="5">5 / page</option>
             <option value="10">10 / page</option>
@@ -57,26 +57,26 @@
     </div>
 
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead>
+        <table class="min-w-full divide-y divide-gray-200 ">
+            <thead class="bg-theme-four">
                 <tr>
-                    <th class="px-6 py-3">ID</th>
-                    <th class="px-6 py-3">Title</th>
-                    <th class="px-6 py-3">Type</th>
-                    <th class="px-6 py-3">Status</th>
-                    <th class="px-6 py-3">Event</th>
-                    <th class="px-6 py-3">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Title</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Status</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Event</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-gray-200">
                 @foreach($applications as $application)
                     <tr>
-                        <td class="px-6 py-4">#{{ $application->id }}</td>
-                        <td class="px-6 py-4">{{ $application->title }}</td>
-                        <td class="px-6 py-4">{{ ucfirst($application->type) }}</td>
-                        <td class="px-6 py-4">{{ ucfirst($application->status) }}</td>
-                        <td class="px-6 py-4">{{ $application->event?->name ?? '-' }}</td>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">#{{ $application->id }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $application->title }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ ucfirst($application->type) }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ ucfirst($application->status) }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $application->event?->name ?? '-' }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">
                             @can('isAdmin')
                                 @if($application->status === 'pending')
                                     <button

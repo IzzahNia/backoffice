@@ -19,7 +19,7 @@
                                 <p class="font-medium text-gray-700">{{ $review->title }} <span class="text-sm text-gray-500">by {{ $review->user->name }}</span></p>
                                 <p class="text-xs text-gray-400">Submitted on {{ $review->created_at->format('M d, Y') }}</p>
                             </div>
-                            <a href="{{ route('review') }}" class="text-blue-500 hover:underline text-sm">Review</a>
+                            {{-- <a href="{{ route('review') }}" class="text-blue-500 hover:underline text-sm">Review</a> --}}
                         </div>
                     </li>
                 @empty

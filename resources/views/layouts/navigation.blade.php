@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-theme-primary border-b border-theme-primary">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -26,11 +26,11 @@
                     <x-nav-link :href="route('v2.applications')" :active="request()->routeIs('application')">
                         {{ __('Application') }}
                     </x-nav-link>
-                    @can('isAdmin')
+                    {{-- @can('isAdmin')
                     <x-nav-link :href="route('v2.reviews')" :active="request()->routeIs('review')">
                         {{ __('Application Review') }}
                     </x-nav-link>
-                    @endcan
+                    @endcan --}}
                 </div>
             </div>
 
@@ -38,12 +38,12 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-black dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
                             <div class="flex flex-col items-start">
-                                <span class="font-semibold text-gray-800 dark:text-gray-200">
+                                <span class="font-semibold text-white dark:text-gray-200">
                                     {{ Auth::user()->name }}
                                 </span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                <span class="text-xs text-white dark:text-gray-400">
                                     {{ ucfirst(Auth::user()->role->value) }}
                                 </span>
                             </div>

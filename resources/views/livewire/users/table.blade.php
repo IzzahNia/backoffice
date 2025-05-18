@@ -48,24 +48,24 @@
     <!-- End Filters -->
 
     <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead>
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 ">
+            <thead class="bg-theme-four">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Id</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Id</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Role</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody class="dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach($users as $user)
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">#{{ $user['id'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $user['name'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $user['email'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $user['role'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">#{{ $user['id'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $user['name'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $user['email'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $user['role'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">
                             <button
                                 wire:click='$dispatch("showUserForm", { userId: {{ $user["id"] }} })'
                                 class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">

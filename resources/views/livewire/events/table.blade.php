@@ -37,28 +37,28 @@
 
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead>
+            <thead class="bg-theme-four">
                 <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Id</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Start Time</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">End Time</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Location</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Verified</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Id</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Name</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Start Time</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">End Time</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Location</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Verified</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium theme-secondary dark:text-gray-300 uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
-            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody class="dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                 @foreach($events as $event)
                     <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">#{{ $event['id'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $event['name'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $event['start_time'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $event['end_time'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ $event['location'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ ucfirst($event['type']) }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">#{{ $event['id'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $event['name'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $event['start_time'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $event['end_time'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ $event['location'] }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">{{ ucfirst($event['type']) }}</td>
+                        <td class="px-6 py-4 theme-secondary whitespace-nowrap">
                             @if($event['is_verified'])
                                 <span class="text-green-600 font-bold">Yes</span>
                             @else

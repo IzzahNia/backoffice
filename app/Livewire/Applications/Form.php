@@ -210,6 +210,8 @@ class Form extends Component
         $this->viewing = false;
         $this->viewData = [];
         $this->application = null;
+        $this->reviewComment = '';
+        $this->reviewAction = '';
     }
 
     public function save()
