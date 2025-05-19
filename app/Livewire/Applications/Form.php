@@ -8,6 +8,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\UserRole;
+use App\Enums\SellingType;
 
 class Form extends Component
 {
@@ -62,13 +63,31 @@ class Form extends Component
                 ['name' => 'motivation', 'label' => 'Why do you want to join?', 'type' => 'textarea'],
             ],
             'vendor' => [
-                ['name' => 'company_name', 'label' => 'Company Name', 'type' => 'text'],
-                ['name' => 'proposal_file', 'label' => 'Proposal File', 'type' => 'file'],
-                ['name' => 'event_id', 'label' => 'Event', 'type' => 'select', 'options' => Event::pluck('name', 'id')->toArray()],
+                ['name' => 'bussiness_name', 'label' => 'Bussiness Name', 'type' => 'text'],
+                ['name' => 'email_field', 'label' => 'Email', 'type' => 'email'],
+                ['name' => 'instagram_url', 'label' => 'Instagram URL', 'type' => 'url'],
+                ['name' => 'contact_name', 'label' => 'Contact Person Name', 'type' => 'text'],
+                ['name' => 'contact_field', 'label' => 'Contact Number', 'type' => 'tel'],
+                ['name' => 'bussiness_based', 'label' => 'Where your bussiness is based at?', 'type' => 'text'],
+                ['name' => 'social_media', 'label' => 'Social media used', 'type' => 'checkbox', 'options' => ['Instagram', 'Facebook', 'Tiktok', 'Twitter']],
+                ['name' => 'how_do_you_know', 'label' => 'How do you know Pasar Sera', 'type' => 'checkbox', 'options' => ['From friends and family', 'From my co worker', 'Pasar Sera appears on my social media timeline', 'From advertisment', 'Other']],
+                ['name' => 'joinwd_us_before', 'label' => 'Have you joined any event as a vendor before?', 'type' => 'select', 'options' => ['Yes', 'No']],
+                ['name' => 'selling_type', 'label' => 'What are you going to sell at Pasar Sera?', 'type' => 'select', 'options' => SellingType::options()],
+                ['name' => 'food_handle', 'label' => 'Do you possess your own "kad pengendalian makanan" registered with local authorities?', 'type' => 'select', 'options' => ['Yes', 'No']],
+                ['name' => 'event_id', 'label' => 'Select Event To Be join Pasar Sera?', 'type' => 'select', 'options' => Event::pluck('name', 'id')->toArray()],
+                ['name' => 'explain_selling', 'label' => 'Briefly explain what are you planning to sell at Pasar Sera?', 'type' => 'textarea'],
+                ['name' => 'suggestion_event', 'label' => 'Suggestions for our upcoming event', 'type' => 'textarea'],
             ],
             'collaborator' => [
                 ['name' => 'portfolio_url', 'label' => 'Portfolio URL', 'type' => 'url'],
                 ['name' => 'specialty', 'label' => 'Specialty', 'type' => 'text'],
+            ],
+            'crew' => [
+                ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
+                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea'],
+                ['name' => 'start_date', 'label' => 'Event Start Date', 'type' => 'date'],
+                ['name' => 'end_date', 'label' => 'Event End Date', 'type' => 'date'],
+                ['name' => 'location', 'label' => 'Location', 'type' => 'text'],
             ],
             'event' => [
                 ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
@@ -90,6 +109,7 @@ class Form extends Component
                 ['name' => 'url_field', 'label' => 'URL', 'type' => 'url'],
                 ['name' => 'file_field', 'label' => 'Upload File', 'type' => 'file', 'accept' => '*'],
                 ['name' => 'image_field', 'label' => 'Upload Image', 'type' => 'image', 'accept' => 'image/*'],
+                ['name' => 'event_id', 'label' => 'Event', 'type' => 'select', 'options' => Event::pluck('name', 'id')->toArray()],
             ],
             default => [],
         };
@@ -197,7 +217,7 @@ class Form extends Component
             } elseif ($user->hasRole(UserRole::HOST)) {
                 $this->type = 'host';
             } else {
-                $this->type = 'user';
+                $this->type = 'vendor';
             }
         }
         $this->fields = $this->getFormFields($this->type);

@@ -4,7 +4,7 @@
         <div class="fixed z-10 inset-0 flex items-center justify-center">
             <div class="fixed inset-0 bg-black opacity-50" wire:click="hide"></div>
             <div
-                class="bg-theme-four rounded-lg shadow-lg p-8 w-full max-w-md z-20 text-white relative min-h-[400px] max-h-[90vh] overflow-y-auto"
+                class="bg-theme-four rounded-lg shadow-lg p-8 w-full max-w-3xl z-20 text-white relative min-h-[400px] max-h-[90vh] overflow-y-auto"
                 onclick="event.stopPropagation();"
             >
                 <h3 class="text-lg font-bold mb-4 theme-secondary">
