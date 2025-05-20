@@ -4,9 +4,9 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-0 flex items-center logo-nav">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                        <img src="{{ asset('assets/logo.jpeg') }}" alt="Logo" class="block h-10 w-auto rounded shadow" />
                     </a>
                 </div>
 
@@ -121,3 +121,11 @@
         </div>
     </div>
 </nav>
+
+<style>
+.logo-nav {
+    border: 3px solid black;
+    border-radius: 10%;
+    background: black;
+}
+</style>
