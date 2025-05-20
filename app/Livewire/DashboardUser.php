@@ -14,6 +14,8 @@ class DashboardUser extends Component
      * - upcoming events
      */
 
+    // This dashboard will be used for crew, and collab users
+
     public function render()
     {
         return view('livewire.dashboard-user');

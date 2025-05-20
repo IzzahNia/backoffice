@@ -29,4 +29,14 @@ class RolePolicy
     {
         return $user->hasRole(UserRole::VENDOR); // Use enum value
     }
+
+    public function isCrew(User $user)
+    {
+        return $user->hasRole(UserRole::CREW); // Use enum value
+    }
+
+    public function isCollab(User $user)
+    {
+        return $user->hasRole(UserRole::COLLABORATOR); // Use enum value
+    }
 }

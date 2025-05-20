@@ -31,5 +31,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('isVendor', function ($user) {
             return (new RolePolicy)->isVendor($user);
         });
+        Gate::define('isCrew', function ($user) {
+            return (new RolePolicy)->isCrew($user);
+        });
+        Gate::define('isCollab', function ($user) {
+            return (new RolePolicy)->isCollab($user);
+        });
     }
 }

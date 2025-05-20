@@ -19,6 +19,14 @@
                     @can('isVendor')
                         @livewire('dashboard-user')
                     @endcan
+
+                    @can('isCrew')
+                        @livewire('dashboard-user')
+                    @endcan
+
+                    @can('isCollab')
+                        @livewire('dashboard-user')
+                    @endcan
                 </div>
             </div>
         </div>
