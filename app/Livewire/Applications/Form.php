@@ -79,15 +79,21 @@ class Form extends Component
                 ['name' => 'suggestion_event', 'label' => 'Suggestions for our upcoming event', 'type' => 'textarea'],
             ],
             'collaborator' => [
-                ['name' => 'portfolio_url', 'label' => 'Portfolio URL', 'type' => 'url'],
-                ['name' => 'specialty', 'label' => 'Specialty', 'type' => 'text'],
+                ['name' => 'first_name', 'label' => 'First Name', 'type' => 'text'],
+                ['name' => 'last_name', 'label' => 'Last Name', 'type' => 'text'],
+                ['name' => 'email_field', 'label' => 'Email', 'type' => 'email'],
+                ['name' => 'what_we_can_help_you', 'label' => 'What we can help you?', 'type' => 'select', 'options' => ['Event Planning', 'Marketing', 'Sponsorship']],
+                ['name' => 'message_field', 'label' => 'Message', 'type' => 'textarea'],
             ],
             'crew' => [
-                ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
-                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea'],
-                ['name' => 'start_date', 'label' => 'Event Start Date', 'type' => 'date'],
-                ['name' => 'end_date', 'label' => 'Event End Date', 'type' => 'date'],
-                ['name' => 'location', 'label' => 'Location', 'type' => 'text'],
+                ['name' => 'name', 'label' => 'Name', 'type' => 'text'],
+                ['name' => 'date_field', 'label' => 'Birthday', 'type' => 'date'],
+                ['name' => 'phone', 'label' => 'Phone Number', 'type' => 'tel'],
+                ['name' => 'address', 'label' => 'Address', 'type' => 'text'],
+                ['name' => 'employment_status', 'label' => 'Employment Status', 'type' => 'select', 'options' => ['Employed', 'Unemployed', 'Self-Employed', 'Student']],
+                ['name' => 'marital_status', 'label' => 'Marital Status', 'type' => 'select', 'options' => ['Single', 'Married', 'Divorced']],
+                ['name' => 'instagram', 'label' => 'Instagram handle', 'type' => 'text'],
+                ['name' => 'resume', 'label' => 'Resume (PDF)', 'type' => 'file'],
             ],
             'event' => [
                 ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
@@ -114,6 +120,18 @@ class Form extends Component
             default => [],
         };
     }
+
+    private function ensureCheckboxArrays()
+{
+    foreach ($this->fields as $field) {
+        if ($field['type'] === 'checkbox') {
+            $name = $field['name'];
+            if (!isset($this->form[$name]) || !is_array($this->form[$name])) {
+                $this->form[$name] = [];
+            }
+        }
+    }
+}
 
     public function validateFields()
     {
@@ -166,6 +184,10 @@ class Form extends Component
             }
         }
         $this->fields = $this->getFormFields($this->type);
+
+        // Ensure checkboxes are arrays
+        $this->ensureCheckboxArrays();
+
         $this->viewing = true;
         $this->showModal = true;
     }
@@ -221,6 +243,10 @@ class Form extends Component
             }
         }
         $this->fields = $this->getFormFields($this->type);
+
+        // Ensure checkboxes are arrays
+        $this->ensureCheckboxArrays();
+
         $this->showModal = true;
     }
 
