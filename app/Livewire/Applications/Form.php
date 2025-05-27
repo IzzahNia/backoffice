@@ -9,6 +9,8 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\UserRole;
 use App\Enums\SellingType;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ApplicationSubmitted;
 
 class Form extends Component
 {
@@ -283,6 +285,8 @@ class Form extends Component
                 'type' => $this->type,
                 'data' => ['form' => array_merge($validated['form'], $uploaded)],
             ]);
+            // Send email after update
+            Mail::to(Auth::user()->email)->send(new ApplicationSubmitted($application));
             $this->dispatch('applicationSaved');
             $this->dispatch('openApplicationDetails', id: $application->id);
             $this->hide();
@@ -296,6 +300,8 @@ class Form extends Component
                 'type' => $this->type,
                 'data' => ['form' => array_merge($validated['form'], $uploaded)],
             ]);
+            // Send email after create
+            Mail::to(Auth::user()->email)->send(new ApplicationSubmitted($application));
             $this->dispatch('applicationSaved');
             $this->dispatch('openApplicationDetails', id: $application->id);
             $this->hide();
