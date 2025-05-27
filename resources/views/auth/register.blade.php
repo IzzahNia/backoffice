@@ -21,7 +21,7 @@
             <x-input-label :value="__('Role')" class="text-black mb-2" />
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 @foreach (\App\Enums\UserRole::cases() as $role)
-                    @if ($role->value !== 'admin')
+                    @if ($role->value !== 'admin' && $role->value !== 'host' && $role->value !== 'user')
                         <label class="inline-flex items-center text-black">
                             <input type="radio" name="role" value="{{ $role->value }}" class="form-radio text-yellow-400 border-gray-300 focus:ring-yellow-400"
                                 {{ old('role') == $role->value ? 'checked' : '' }} required>

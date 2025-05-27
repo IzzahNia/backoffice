@@ -23,7 +23,9 @@
         >
             <option value="">All Roles</option>
             <option value="admin">Admin</option>
-            <option value="user">User</option>
+            <option value="vendor">Vendor</option>
+            <option value="crew">Crew</option>
+            <option value="collaborator">Collaborator</option>
             <!-- Add more roles as needed -->
         </select>
 

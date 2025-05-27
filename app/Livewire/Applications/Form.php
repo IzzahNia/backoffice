@@ -94,6 +94,7 @@ class Form extends Component
                 ['name' => 'marital_status', 'label' => 'Marital Status', 'type' => 'select', 'options' => ['Single', 'Married', 'Divorced']],
                 ['name' => 'instagram', 'label' => 'Instagram handle', 'type' => 'text'],
                 ['name' => 'resume', 'label' => 'Resume (PDF)', 'type' => 'file'],
+                ['name' => 'event_id', 'label' => 'Select Event To Be join Pasar Sera?', 'type' => 'select', 'options' => Event::pluck('name', 'id')->toArray()],
             ],
             'event' => [
                 ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
@@ -177,10 +178,8 @@ class Form extends Component
                 $this->type = 'collaborator';
             } elseif ($user->hasRole(UserRole::CREW)) {
                 $this->type = 'crew';
-            } elseif ($user->hasRole(UserRole::HOST)) {
-                $this->type = 'host';
             } else {
-                $this->type = 'user';
+                $this->type = 'collaborator';
             }
         }
         $this->fields = $this->getFormFields($this->type);
@@ -236,10 +235,8 @@ class Form extends Component
                 $this->type = 'collaborator';
             } elseif ($user->hasRole(UserRole::CREW)) {
                 $this->type = 'crew';
-            } elseif ($user->hasRole(UserRole::HOST)) {
-                $this->type = 'host';
             } else {
-                $this->type = 'vendor';
+                $this->type = 'collaborator';
             }
         }
         $this->fields = $this->getFormFields($this->type);

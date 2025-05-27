@@ -46,7 +46,10 @@ class Table extends Component
         }
 
         if ($this->appliedFilters['role']) {
-            $query->where('role', $this->appliedFilters['role']);
+        $query->where('role', $this->appliedFilters['role']);
+        } else {
+            // Only show admin, crew, and vendor if no filter is applied
+            $query->whereIn('role', ['admin', 'crew', 'vendor', 'collaborator']);
         }
 
         $users = $query->latest()->paginate($this->appliedFilters['perPage']);
