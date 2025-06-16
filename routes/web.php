@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Export\DashboardExportController;
+use App\Livewire\Events\EventFeedbackForm;
 
 Route::get('/', function () {
     return view('homepage');
@@ -56,5 +57,7 @@ Route::prefix('v2')->group(function () {
 Route::get('/applications/{application}', [App\Http\Controllers\ApplicationDetailsController::class, 'show'])->name('applications.details');
 
 Route::get('/dashboard/export', [DashboardExportController::class, 'export'])->name('dashboard.export');
+
+Route::get('/event/{event}/feedback', EventFeedbackForm::class)->name('event.feedback');
 
 require __DIR__.'/auth.php';

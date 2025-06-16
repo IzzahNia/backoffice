@@ -71,7 +71,19 @@
                                 class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded mr-2">
                                 Edit
                             </button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Delete</button>
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded mr-2">Delete</button>
+                            <!-- Feedback Link Button -->
+                            <button
+                                onclick="navigator.clipboard.writeText('{{ url('/event/'.$event['id'].'/feedback') }}'); alert('Feedback link copied!')"
+                                class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded mr-2">
+                                Copy Feedback Link
+                            </button>
+                            <!-- Show QR Button (opens modal with QR code) -->
+                            <button
+                                onclick="showQrModal('{{ url('/event/'.$event['id'].'/feedback') }}')"
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">
+                                Show QR
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -81,4 +93,30 @@
     <div class="mt-4">
         {{ $events->links() }}
     </div>
+    <!-- QR Modal -->
+    <div id="qrModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white p-6 rounded shadow-lg flex flex-col items-center">
+            <canvas id="qrCodeCanvas" width="200" height="200"></canvas>
+            <button onclick="closeQrModal()" class="mt-4 bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded">Close</button>
+        </div>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+<script>
+function showQrModal(link) {
+    document.getElementById('qrModal').classList.remove('hidden');
+    // Generate QR code in the canvas
+    new QRious({
+        element: document.getElementById('qrCodeCanvas'),
+        value: link,
+        size: 200
+    });
+}
+function closeQrModal() {
+    document.getElementById('qrModal').classList.add('hidden');
+    // Optionally clear the canvas
+    const canvas = document.getElementById('qrCodeCanvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+</script>
