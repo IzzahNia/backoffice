@@ -33,25 +33,33 @@
 
     <div class="col-span-6 lg:col-span-3">
         <div class="p-4 bg-white shadow rounded-xl">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Vendor Category Distribution</h2>
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Users Role Distribution</h2>
             <div class="relative" style="height: 300px;">
-                <canvas id="myChart"></canvas>
+                <canvas id="userRolesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-6 lg:col-span-3">
+    <div class="p-4 bg-white shadow rounded-xl">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Application Status Distribution</h2>
+            <div class="relative" style="height: 300px;">
+                <canvas id="applicationStatusChart"></canvas>
             </div>
         </div>
     </div>
     <div class="col-span-6 lg:col-span-3">
         <div class="p-4 bg-white shadow rounded-xl">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Weekly Attendance</h2>
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Application Form Type Distribution</h2>
             <div class="relative" style="height: 300px;">
-                <canvas id="myChart2"></canvas>
+                <canvas id="applicationTypeChart"></canvas>
             </div>
         </div>
     </div>
-    <div class="col-span-6 lg:col-span-3">
+    <div class="col-span-6">
         <div class="p-4 bg-white shadow rounded-xl">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Weekly Attendance</h2>
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Total Applications by Month ({{ now()->year }})</h2>
             <div class="relative" style="height: 300px;">
-                <canvas id="myChart3"></canvas>
+                <canvas id="applicationsByMonthChart"></canvas>
             </div>
         </div>
     </div>
@@ -59,21 +67,20 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
+  const users = document.getElementById('userRolesChart');
+  new Chart(users, {
     type: 'pie',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: {!! json_encode(array_keys($userRoleCounts)) !!},
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# of Users',
+        data: {!! json_encode(array_values($userRoleCounts)) !!},
         borderWidth: 1
       }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true
@@ -81,23 +88,78 @@
       }
     }
   });
-</script>
-<script>
-  const ctx2 = document.getElementById('myChart2');
 
-  new Chart(ctx2, {
-    type: 'bar',
+  const applicationStatus = document.getElementById('applicationStatusChart');
+  new Chart(applicationStatus, {
+    type: 'pie',
     data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      labels: {!! json_encode(array_keys($applicationStatusCounts)) !!},
       datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        label: '# of Applications',
+        data: {!! json_encode(array_values($applicationStatusCounts)) !!},
         borderWidth: 1
       }]
     },
     options: {
-        responsive: true,
-        maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  // Applications by Month Line Chart
+  const applicationsByMonthCtx = document.getElementById('applicationsByMonthChart').getContext('2d');
+  new Chart(applicationsByMonthCtx, {
+    type: 'line',
+    data: {
+      labels: [
+        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      ],
+      datasets: [{
+        label: 'Applications',
+        data: [
+          @for ($i = 1; $i <= 12; $i++)
+            {{ $applicationsByMonth[$i] ?? 0 }}{{ $i < 12 ? ',' : '' }}
+          @endfor
+        ],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  // Application Form Type Pie Chart
+  const applicationType = document.getElementById('applicationTypeChart');
+  new Chart(applicationType, {
+    type: 'pie',
+    data: {
+      labels: {!! json_encode(array_keys($applicationTypeCounts)) !!},
+      datasets: [{
+        label: '# of Applications',
+        data: {!! json_encode(array_values($applicationTypeCounts)) !!},
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: {
         y: {
           beginAtZero: true
@@ -106,52 +168,3 @@
     }
   });
 </script>
-<script>
-    const ctx3 = document.getElementById('myChart3').getContext('2d');
-
-    new Chart(ctx3, {
-      type: 'line',
-      data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'], // X-axis labels
-        datasets: [
-          {
-            label: 'Dataset 1', // Label for the first line
-            data: [12, 19, 3, 5, 2, 3], // Data points for the first line
-            borderColor: 'rgba(255, 99, 132, 1)', // Line color
-            backgroundColor: 'rgba(255, 99, 132, 0.2)', // Fill color (optional)
-            borderWidth: 2, // Line thickness
-          },
-          {
-            label: 'Dataset 2', // Label for the second line
-            data: [8, 15, 6, 10, 4, 7], // Data points for the second line
-            borderColor: 'rgba(54, 162, 235, 1)', // Line color
-            backgroundColor: 'rgba(54, 162, 235, 0.2)', // Fill color (optional)
-            borderWidth: 2, // Line thickness
-          },
-          {
-            label: 'Dataset 3', // Label for the third line
-            data: [5, 10, 15, 20, 25, 30], // Data points for the third line
-            borderColor: 'rgba(75, 192, 192, 1)', // Line color
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color (optional)
-            borderWidth: 2, // Line thickness
-          },
-          {
-            label: 'Dataset 4', // Label for the fourth line
-            data: [20, 18, 16, 14, 12, 10], // Data points for the fourth line
-            borderColor: 'rgba(153, 102, 255, 1)', // Line color
-            backgroundColor: 'rgba(153, 102, 255, 0.2)', // Fill color (optional)
-            borderWidth: 2, // Line thickness
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true, // Y-axis starts at zero
-          },
-        },
-      },
-    });
-  </script>
